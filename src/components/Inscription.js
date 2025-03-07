@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import '../styles/Inscription.css';
-import { Link, useNavigate } from 'react-router-dom';
-const Inscription = () => {
-    const navigate = useNavigate();
 
+
+
+const Inscription = () => {
     const [utilisateur, setUtilisateur] = useState({
         username: '',
-        prenom: '',
-        nom: '',
         email: '',
         password: '',
-        role: '', 
     });
 
     const handleChange = (e) => {
@@ -23,41 +20,38 @@ const Inscription = () => {
         try {
             const response = await fetch('http://localhost:8081/auth/inscrire', {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: utilisateur.username,
-                    password: utilisateur.password,
-                    nom: utilisateur.nom,
-                    prenom: utilisateur.prenom,
-                    role: utilisateur.role
-                })
+                body: JSON.stringify(utilisateur)
             });
-    
-            const data = await response.text(); 
+
             if (!response.ok) {
-                throw new Error(data || `Erreur HTTP : ${response.status}`);
+                throw new Error(`Erreur HTTP : ${response.status}`);
             }
-    
+
+            const data = await response.json();
             alert('Inscription réussie !');
-            navigate('/inscription'); 
+            console.log('Réponse du serveur :', data);
         } catch (error) {
-            alert('Erreur lors de l\'inscription : ' + error.message);
+            alert('Erreur lors de l\'inscription');
             console.error('Erreur Fetch :', error);
         }
     };
-    
 
     return (
-    
         <div className="inscription-container">
-            
             <h2>Inscription</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Nom d'utilisateur</label>
-                    <input type="text" name="username" value={utilisateur.username} onChange={handleChange} required />
+                    <input
+                        type="text"
+                        name="username"
+                        value={utilisateur.username}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <div className="form-group">
                     <label>Prénom</label>
@@ -68,12 +62,36 @@ const Inscription = () => {
                     <input type="text" name="nom" value={utilisateur.nom} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={utilisateur.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
                     <label>Mot de passe</label>
-                    <input type="password" name="password" value={utilisateur.password} onChange={handleChange} required />
+                    <input
+                        type="password"
+                        name="password"
+                        value={utilisateur.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Rôle</label> 
+                    <select name="role" value={utilisateur.role} onChange={handleChange} required>
+                        <option value="">Sélectionnez un rôle</option>
+                        <option value="PERMANENT">Permanent</option>
+                        <option value="VACATAIRE">Vacataire</option>
+                        <option value="ETUDIANT">Étudiant</option>
+                    </select>
                 </div>
                 <button type="submit">S'inscrire</button>
             </form>
-            
         </div>
     );
 };

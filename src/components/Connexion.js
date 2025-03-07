@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Connexion.css';
 
-  
-
 const Connexion = () => {
     const [login, setLogin] = useState({
         username: '',
@@ -14,7 +12,10 @@ const Connexion = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setLogin({ ...login, [name]: value });
+        setLogin((prevLogin) => ({
+            ...prevLogin,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -25,57 +26,51 @@ const Connexion = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(login)
+                body: JSON.stringify(login),
+                credentials: 'include' 
             });
-
+    
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+    
             const data = await response.json();
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('role', data.role);
-
+            console.log("Réponse API :", data);
+    
+            sessionStorage.setItem('role', data.role);
+    
             switch (data.role) {
-                
-                case 'permanent':
+                case 'PERMANENT':
                     navigate('/permanent');
                     break;
-                case 'vacataire':
+                case 'VACATAIRE':
                     navigate('/vacataire');
                     break;
-                case 'etudiant':
+                case 'ETUDIANT':
                     navigate('/etudiant');
                     break;
                 default:
-                    navigate('/permanent');
+                    navigate('/');
                     break;
             }
         } catch (error) {
-            alert('Username ou mot de passe incorrect');
+            alert('❌ Erreur de connexion : Vérifiez vos identifiants');
             console.error('Erreur Fetch :', error);
         }
     };
+    
 
     return (
         <div className="connexion-container">
             <h2>Connexion</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Nom d'utilisateur</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={login.username}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label>Username</label>
+                    <input type="text" name="username" value={login.username} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
                     <label>Mot de passe</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={login.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    <input type="password" name="password" value={login.password} onChange={handleChange} required />
                 </div>
                 <button type="submit">Se connecter</button>
             </form>
