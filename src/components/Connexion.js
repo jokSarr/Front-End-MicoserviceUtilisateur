@@ -36,20 +36,35 @@ const Connexion = () => {
     
             const data = await response.json();
             console.log("Réponse API :", data);
-    
+            console.log("Token reçu :", data.token);
+
+            console.log("Rôle extrait :", data.role);
+
+            // Stocker le rôle et le token
             sessionStorage.setItem('role', data.role);
-    
+            localStorage.setItem('token', data.token); // Assurez-vous que le token est stocké ici
+
+            // Redirection en fonction du rôle
             switch (data.role) {
                 case 'PERMANENT':
+                    console.log("Redirection vers PERMANENT");
                     navigate('/permanent');
                     break;
                 case 'VACATAIRE':
+                    console.log("Redirection vers VACATAIRE");
                     navigate('/vacataire');
                     break;
+                case 'CHEF-DEPARTEMENT':
+                    console.log("Redirection vers CHEF_DEPARTEMENT");
+                    navigate('/chefDepartement');
+                    break;
+
                 case 'ETUDIANT':
+                    console.log("Redirection vers ETUDIANT");
                     navigate('/etudiant');
                     break;
                 default:
+                    console.log("Redirection vers la page par défaut");
                     navigate('/');
                     break;
             }
@@ -58,7 +73,6 @@ const Connexion = () => {
             console.error('Erreur Fetch :', error);
         }
     };
-    
 
     return (
         <div className="connexion-container">

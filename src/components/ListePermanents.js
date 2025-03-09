@@ -12,7 +12,7 @@ function Barre(){
                     <Nav className="me-auto">
                     <NavDropdown title="Enseignants">
                         <NavDropdown.Item href="/ChefDepartement/ListePermanents">Permanents</NavDropdown.Item>
-                        <NavDropdown.Item href="/ChefDepartement/ListeVacataires">Vacataire</NavDropdown.Item>
+                        <NavDropdown.Item href="/ChefDepartement/ListeVacataires">Vacataires</NavDropdown.Item>
                     </NavDropdown>
                         <Nav.Link href="/ChefDepartement/Enseignants">Enseignants</Nav.Link>
                         <Nav.Link href="/ChefDepartement/EmploisDuTemps">Emplois du Temps</Nav.Link>
@@ -28,7 +28,6 @@ function Barre(){
 }
 
 function ListePermanents() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [afficherFormulaire, setAfficherFormulaire] = useState(false); 
     const navigate = useNavigate();
 
@@ -36,8 +35,6 @@ function ListePermanents() {
         const token = localStorage.getItem('token');
         if (!token) {
             navigate('/permanents/ListePermanents');
-        } else {
-            setIsAuthenticated(true);
         }
     }, [navigate]);
 

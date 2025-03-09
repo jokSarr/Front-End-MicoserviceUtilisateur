@@ -34,14 +34,10 @@ function CustomNavbar() {
                     <NavDropdown.Item href="/ChefDepartement/ListePermanents">Permanents</NavDropdown.Item>
                     <NavDropdown.Item href="/ChefDepartement/ListeVacataires">Vacataire</NavDropdown.Item>
                 </NavDropdown>
-                    <Nav.Link href="/ChefDepartement/Enseignants">Enseignants</Nav.Link>
                     <Nav.Link href="/ChefDepartement/EmploisDuTemps">Emplois du Temps</Nav.Link>
-                    <Nav.Link href="/ChefDepartement/Formation">Formations</Nav.Link>
+                    <Nav.Link href="http://localhost:8080/maquette">Maquette</Nav.Link>
                     <Nav.Link href="/ChefDepartement/Repartition">Repartition</Nav.Link>
-                    <NavDropdown title="Syllabus">
-                        <NavDropdown.Item href="/ChefDepartement/UE">UE</NavDropdown.Item>
-                        <NavDropdown.Item href="/ChefDepartement/ECTout">EC</NavDropdown.Item>
-                    </NavDropdown>
+                
                 </Nav>
             </Navbar.Collapse>
             <Nav.Link onClick={handleLogout} style={{ cursor: 'pointer', color: 'red' }}>
